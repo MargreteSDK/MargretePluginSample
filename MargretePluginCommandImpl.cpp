@@ -75,6 +75,33 @@ MpBoolean CMargretePluginCommandImpl::invoke(IMargretePluginContext* ctx) {
 			// put slideBegin into the chart
 			chart->appendNote(slideBegin.get());
 		}
+
+		// put air-crush
+		MargreteComPtr<IMargretePluginNote> airCrushBegin, airCrushEnd;
+		if (chart->createNote(airCrushBegin.put()) &&
+			chart->createNote(airCrushEnd.put())) {
+
+			noteInfo.type = MP_NOTETYPE_AIRCRUSH;
+			noteInfo.longAttr = MP_NOTELONGATTR_BEGIN;
+			noteInfo.x = 2;
+			noteInfo.width = 4;
+			noteInfo.height = 100;
+			noteInfo.tick = currentTick + 1440;
+			noteInfo.optionValue = 480; // interval
+			noteInfo.timelineId = 0;
+			airCrushBegin->setInfo(&noteInfo);
+
+			noteInfo.longAttr = MP_NOTELONGATTR_END;
+			noteInfo.tick += 480;
+			noteInfo.x = 6;
+			noteInfo.width = 8;
+			noteInfo.height = 0;
+			noteInfo.timelineId = 0;
+			airCrushEnd->setInfo(&noteInfo);
+
+			airCrushBegin->appendChild(airCrushEnd.get());
+			chart->appendNote(airCrushBegin.get());
+		}
 	}
 
 	// insert bpm event

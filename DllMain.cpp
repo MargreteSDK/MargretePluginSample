@@ -16,13 +16,16 @@ BOOL APIENTRY DllMain(HMODULE hModule, DWORD  ul_reason_for_call, LPVOID lpReser
 
 
 DLLEXPORT void WINAPI MargretePluginGetInfo(MP_PLUGININFO* info) {
-	if (!info || !info->nameBuffer || !info->descBuffer || !info->developerBuffer)
+	if (!info)
 		return;
 
 	info->sdkVersion = MP_SDK_VERSION;
-	wcsncpy_s(info->nameBuffer, info->nameBufferLength, L"MargretePluginSample", info->nameBufferLength);
-	wcsncpy_s(info->descBuffer, info->descBufferLength, L"プラグイン開発のサンプル", info->descBufferLength);
-	wcsncpy_s(info->developerBuffer, info->developerBufferLength, L"inonote", info->developerBufferLength);
+	if (info->nameBuffer)
+		wcsncpy_s(info->nameBuffer, info->nameBufferLength, L"MargretePluginSample", info->nameBufferLength);
+	if (info->descBuffer)
+		wcsncpy_s(info->descBuffer, info->descBufferLength, L"プラグイン開発のサンプル", info->descBufferLength);
+	if (info->developerBuffer)
+		wcsncpy_s(info->developerBuffer, info->developerBufferLength, L"inonote", info->developerBufferLength);
 }
 
 DLLEXPORT MpBoolean WINAPI MargretePluginCommandCreate(IMargretePluginCommand** ppobj) {
